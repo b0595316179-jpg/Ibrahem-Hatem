@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Gallery - Unsplash Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gallery: '#6366f1',
+                        galleryDark: '#4f46e5'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 1rem;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+        .filter-btn.active {
+            background-color: #6366f1;
+            color: white;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow: auto;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: 5% auto;
+            display: block;
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        .search-bar {
+            transition: all 0.3s ease;
+        }
+        .search-bar:focus {
+            width: 100%;
+            max-width: 500px;
+        }
+        .mobile-filters {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 0.5rem;
+            }
+            .gallery-item img {
+                height: 150px;
+            }
+            .overlay {
+                padding: 0.5rem;
+            }
+            .overlay h3 {
+                font-size: 0.875rem;
+            }
+            .overlay p {
+                font-size: 0.75rem;
+            }
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            .mobile-filters {
+                display: block;
+            }
+            .desktop-filters {
+                display: none;
+            }
+            .modal-content {
+                max-width: 95%;
+                max-height: 85%;
+            }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-actions {
+                width: 100%;
+                margin-top: 1rem;
+                justify-content: space-between;
+            }
+            .search-container {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            .search-bar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="header-content flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between w-full md:w-auto">
+                    <div class="flex items-center">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-2 rounded-lg">
+                            <i class="fas fa-camera text-white text-xl"></i>
+                        </div>
+                        <h1 class="ml-3 text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Pro Gallery</h1>
+                    </div>
+                    <button class="md:hidden text-gray-500" id="mobileMenuBtn">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="header-actions flex items-center space-x-4 mt-4 md:mt-0">
+                    <div class="search-container">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="Search photos..." 
+                                class="search-bar w-full md:w-64 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gallery focus:border-transparent pl-10 transition-all"
+                            >
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                    
+                    <button class="bg-gallery hover:bg-galleryDark text-white px-4 py-2 rounded-full text-sm font-medium transition-colors hidden md:block">
+                        <i class="fas fa-upload mr-2"></i>Upload
+                    </button>
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold">
+                        U
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Filters Button -->
+    <div class="mobile-filters bg-white border-b border-gray-200 p-4">
+        <button id="filterToggle" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center justify-center">
+            <i class="fas fa-filter mr-2"></i>Filter Photos
+        </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="desktop-filters bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-wrap gap-2">
+                <button class="filter-btn active px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">All</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">Nature</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">Travel</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">Architecture</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">People</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">Animals</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">Food</button>
+                <button class="filter-btn px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100">Abstract</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Filter Dropdown -->
+    <div id="mobileFilters" class="hidden bg-white border-b border-gray-200 p-4">
+        <div class="flex flex-wrap gap-2">
+            <button class="filter-btn active px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">All</button>
+            <button class="filter-btn px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">Nature</button>
+            <button class="filter-btn px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">Travel</button>
+            <button class="filter-btn px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">Architecture</button>
+            <button class="filter-btn px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">People</button>
+            <button class="filter-btn px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">Animals</button>
+            <button class="filter-btn px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">Food</button>
+            <button class="filter-btn px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-100">Abstract</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Stats -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900">Featured Collection</h2>
+            <p class="text-gray-600">Discover amazing photos from talented photographers around the world</p>
+            <div class="stats-container grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div class="text-2xl font-bold text-gallery">12,542</div>
+                    <div class="text-gray-600">Photos</div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div class="text-2xl font-bold text-gallery">1,248</div>
+                    <div class="text-gray-600">Photographers</div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div class="text-2xl font-bold text-gallery">89</div>
+                    <div class="text-gray-600">Categories</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="loading" id="loading">
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin text-3xl text-gallery"></i>
+                <p class="mt-2 text-gray-600">Loading amazing photos...</p>
+            </div>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery items will be dynamically inserted here -->
+        </div>
+
+        <!-- Load More Button -->
+        <div class="text-center mt-12">
+            <button id="loadMore" class="bg-gallery hover:bg-galleryDark text-white px-6 py-3 rounded-full font-medium transition-colors">
+                <i class="fas fa-sync-alt mr-2"></i>Load More Photos
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal for Image Preview -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="text-white text-center mt-4 px-4">
+            <h3 id="modalTitle" class="text-xl font-bold"></h3>
+            <p id="modalDescription" class="mt-2"></p>
+            <div class="mt-4 flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <button class="bg-gallery hover:bg-galleryDark text-white px-4 py-2 rounded-full text-sm">
+                    <i class="fas fa-download mr-2"></i>Download
+                </button>
+                <button class="bg-white text-gray-800 hover:bg-gray-100 px-4 py-2 rounded-full text-sm">
+                    <i class="fas fa-heart mr-2"></i>Like
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-2 rounded-lg">
+                            <i class="fas fa-camera text-white text-xl"></i>
+                        </div>
+                        <h3 class="ml-3 text-xl font-bold">Pro Gallery</h3>
+                    </div>
+                    <p class="mt-4 text-gray-400">
+                        Discover and share amazing photos from talented photographers around the world.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Popular</a></li>
+                        <li><a href="#" class="hover:text-white">Latest</a></li>
+                        <li><a href="#" class="hover:text-white">Curated</a></li>
+                        <li><a href="#" class="hover:text-white">Collections</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-pinterest text-xl"></i>
+                        </a>
+                    </div>
+                    <p class="mt-4 text-gray-400">
+                        Subscribe to our newsletter
+                    </p>
+                    <div class="mt-2 flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 bg-gray-700 rounded-l text-white focus:outline-none text-sm">
+                        <button class="bg-gallery hover:bg-galleryDark px-3 py-2 rounded-r text-sm">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 Pro Gallery. All rights reserved. Photos from Unsplash.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            // Sample photo data with Unsplash URLs
+            const photos = [
+                {
+                    id: 1,
+                    url: "https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Mountain Landscape",
+                    description: "Beautiful mountain range at sunrise",
+                    category: "Nature",
+                    photographer: "John Doe"
+                },
+                {
+                    id: 2,
+                    url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Forest Path",
+                    description: "Misty forest path in the morning",
+                    category: "Nature",
+                    photographer: "Jane Smith"
+                },
+                {
+                    id: 3,
+                    url: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "City Skyline",
+                    description: "Urban skyline at dusk",
+                    category: "Architecture",
+                    photographer: "Mike Johnson"
+                },
+                {
+                    id: 4,
+                    url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Mountain Peak",
+                    description: "Snow-capped mountain peak",
+                    category: "Nature",
+                    photographer: "Sarah Wilson"
+                },
+                {
+                    id: 5,
+                    url: "https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Beach Sunset",
+                    description: "Stunning sunset over the ocean",
+                    category: "Travel",
+                    photographer: "David Brown"
+                },
+                {
+                    id: 6,
+                    url: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Mountain Lake",
+                    description: "Serene lake surrounded by mountains",
+                    category: "Nature",
+                    photographer: "Emma Davis"
+                },
+                {
+                    id: 7,
+                    url: "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Ocean Waves",
+                    description: "Powerful waves crashing on rocks",
+                    category: "Nature",
+                    photographer: "Chris Miller"
+                },
+                {
+                    id: 8,
+                    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Colorful Sky",
+                    description: "Vibrant colors in the evening sky",
+                    category: "Nature",
+                    photographer: "Alex Turner"
+                },
+                {
+                    id: 9,
+                    url: "https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Mountain Range",
+                    description: "Majestic mountain range overview",
+                    category: "Nature",
+                    photographer: "Robert Garcia"
+                },
+                {
+                    id: 10,
+                    url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Forest Waterfall",
+                    description: "Waterfall in a lush forest",
+                    category: "Nature",
+                    photographer: "Jennifer Lee"
+                },
+                {
+                    id: 11,
+                    url: "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Autumn Forest",
+                    description: "Colorful autumn forest scene",
+                    category: "Nature",
+                    photographer: "Michael Clark"
+                },
+                {
+                    id: 12,
+                    url: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "City Architecture",
+                    description: "Modern city architecture at night",
+                    category: "Architecture",
+                    photographer: "Sophia Martinez"
+                }
+            ];
+
+            // Display photos
+            function displayPhotos(photoArray) {
+                const galleryGrid = $('#galleryGrid');
+                galleryGrid.empty();
+                
+                photoArray.forEach(photo => {
+                    const photoElement = `
+                        <div class="gallery-item" data-id="${photo.id}">
+                            <img src="${photo.url}" alt="${photo.title}">
+                            <div class="overlay">
+                                <h3 class="font-bold text-sm">${photo.title}</h3>
+                                <p class="text-xs mt-1">${photo.photographer}</p>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="bg-black bg-opacity-50 px-2 py-1 rounded text-xs">${photo.category}</span>
+                                    <div class="flex space-x-2">
+                                        <button class="like-btn text-white hover:text-red-500 text-xs">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                        <button class="download-btn text-white hover:text-blue-500 text-xs">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    galleryGrid.append(photoElement);
+                });
+            }
+
+            // Initial display
+            displayPhotos(photos);
+
+            // Filter functionality
+            $('.filter-btn').click(function() {
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                const category = $(this).text();
+                if (category === 'All') {
+                    displayPhotos(photos);
+                } else {
+                    const filteredPhotos = photos.filter(photo => photo.category === category);
+                    displayPhotos(filteredPhotos);
+                }
+            });
+
+            // Search functionality
+            $('#searchInput').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                if (searchTerm === '') {
+                    displayPhotos(photos);
+                    return;
+                }
+                
+                const filteredPhotos = photos.filter(photo => 
+                    photo.title.toLowerCase().includes(searchTerm) || 
+                    photo.description.toLowerCase().includes(searchTerm) ||
+                    photo.photographer.toLowerCase().includes(searchTerm) ||
+                    photo.category.toLowerCase().includes(searchTerm)
+                );
+                displayPhotos(filteredPhotos);
+            });
+
+            // Load more photos
+            $('#loadMore').click(function() {
+                $('#loading').show();
+                $(this).prop('disabled', true).text('Loading...');
+                
+                // Simulate loading more photos
+                setTimeout(() => {
+                    // In a real app, this would fetch more photos from Unsplash API
+                    const morePhotos = [
+                        {
+                            id: 13,
+                            url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                            title: "Landscape Beauty",
+                            description: "Beautiful landscape with river",
+                            category: "Nature",
+                            photographer: "Thomas Wright"
+                        },
+                        {
+                            id: 14,
+                            url: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                            title: "Mountain Reflection",
+                            description: "Mountains reflected in a lake",
+                            category: "Nature",
+                            photographer: "Lisa Anderson"
+                        }
+                    ];
+                    
+                    photos.push(...morePhotos);
+                    displayPhotos(photos);
+                    $('#loading').hide();
+                    $(this).prop('disabled', false).html('<i class="fas fa-sync-alt mr-2"></i>Load More Photos');
+                }, 1500);
+            });
+
+            // Image click to open modal
+            $(document).on('click', '.gallery-item', function() {
+                const photoId = $(this).data('id');
+                const photo = photos.find(p => p.id === photoId);
+                
+                if (photo) {
+                    $('#modalImage').attr('src', photo.url);
+                    $('#modalTitle').text(photo.title);
+                    $('#modalDescription').text(photo.description);
+                    $('#imageModal').fadeIn();
+                }
+            });
+
+            // Close modal
+            $('.close-modal, #imageModal').click(function(e) {
+                if (e.target === this) {
+                    $('#imageModal').fadeOut();
+                }
+            });
+
+            // Like button functionality
+            $(document).on('click', '.like-btn', function(e) {
+                e.stopPropagation();
+                const icon = $(this).find('i');
+                icon.toggleClass('far fas text-red-500');
+            });
+
+            // Download button functionality
+            $(document).on('click', '.download-btn', function(e) {
+                e.stopPropagation();
+                const icon = $(this).find('i');
+                const originalClass = icon.attr('class');
+                icon.removeClass().addClass('fas fa-check text-green-500');
+                
+                setTimeout(() => {
+                    icon.removeClass().addClass(originalClass);
+                }, 2000);
+            });
+
+            // Keyboard shortcut to close modal
+            $(document).keydown(function(e) {
+                if (e.keyCode === 27) { // ESC key
+                    $('#imageModal').fadeOut();
+                }
+            });
+
+            // Mobile menu toggle
+            $('#mobileMenuBtn').click(function() {
+                $('#mobileFilters').toggleClass('hidden');
+            });
+
+            // Filter toggle on mobile
+            $('#filterToggle').click(function() {
+                $('#mobileFilters').toggleClass('hidden');
+            });
+
+            // Handle window resize
+            $(window).resize(function() {
+                if ($(window).width() > 768) {
+                    $('#mobileFilters').addClass('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

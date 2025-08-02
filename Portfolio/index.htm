@@ -1,0 +1,828 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Skills Showcase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E5077;
+            --secondary: #4A6FA5;
+            --dark: #1a2e45;
+            --light: #f8f9fa;
+            --accent: #6B8BA4;
+            --light-accent: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--light);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(46, 80, 119, 0.1);
+            border-bottom: 1px solid var(--light-accent);
+        }
+
+        .navbar-brand {
+            color: var(--primary) !important;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            color: var(--accent) !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(46, 80, 119, 0.05) 0%, rgba(107, 139, 164, 0.1) 100%);
+            padding: 120px 0 80px;
+            position: relative;
+        }
+
+        .hero-content{
+            margin-bottom: 55px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
+
+        /* .text-center img{
+            margin: 31px auto !important;
+        } */
+
+        .btn-primary {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark) !important;
+            border-color: var(--dark) !important;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary) !important;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .skill-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(46, 80, 119, 0.08);
+            border: 1px solid var(--light-accent);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(46, 80, 119, 0.15);
+        }
+
+        .skill-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            font-size: 2rem;
+            background: var(--light-accent);
+            color: var(--primary);
+        }
+
+        .skill-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .skill-card p {
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-custom {
+            height: 8px;
+            border-radius: 4px;
+            background: var(--light-accent);
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: var(--primary);
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--accent);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .experience-section {
+            background: white;
+            padding: 100px 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--light-accent);
+            left: 50%;
+            margin-left: -1.5px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            width: 100%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            padding-right: calc(50% + 30px);
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            padding-left: calc(50% + 30px);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            top: 15px;
+            left: 50%;
+            margin-left: -10px;
+            box-shadow: 0 0 0 6px rgba(46, 80, 119, 0.1);
+        }
+
+        .timeline-content {
+            background: var(--light-accent);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(46, 80, 119, 0.05);
+        }
+
+        .timeline-content h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .timeline-content .date {
+            color: var(--dark);
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .projects-section {
+            background: #f1f5f9;
+            padding: 100px 0;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(46, 80, 119, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 1px solid var(--light-accent);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(46, 80, 119, 0.15);
+        }
+
+        .project-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-img img {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .tech-tag {
+            background: var(--light-accent);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .contact-section {
+            background: white;
+            padding: 100px 0;
+        }
+
+        .contact-card {
+            background: var(--light-accent);
+            border-radius: 15px;
+            padding: 40px;
+            height: 100%;
+            box-shadow: 0 4px 6px rgba(46, 80, 119, 0.05);
+            border: 1px solid var(--light-accent);
+            text-align: center;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            margin: 0 auto 20px;
+        }
+
+        .contact-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .contact-card p {
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        footer h3, footer h4 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        footer p {
+            color: var(--light-accent);
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--light-accent);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .badge {
+            background-color: var(--light-accent) !important;
+            color: var(--primary) !important;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                padding-right: 0 !important;
+                padding-left: 70px !important;
+                text-align: left !important;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Ibrahem Hatem</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#experience">Experience</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1>Full Stack Developer Skills</h1>
+                        <p>Experienced in HTML, CSS, SCSS, Bootstrap, JavaScript, jQuery, PHP, and MySQL. Building modern, responsive web applications with clean code and best practices.</p>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="#skills" class="btn btn-primary btn-lg">View Skills</a>
+                            <a href="#contact" class="btn btn-outline-primary btn-lg">Get In Touch</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Developer Skills" class="img-fluid rounded" style="border: 1px solid #E2E8F0;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-5">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technical Skills</h2>
+                <p>Proficient in a wide range of technologies and frameworks</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <h3>HTML5</h3>
+                        <p>Semantic markup, accessibility, forms, and modern HTML features.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 95%"></div>
+                        </div>
+                        <small class="text-muted">5+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fab fa-css3-alt"></i>
+                        </div>
+                        <h3>CSS3 & SCSS</h3>
+                        <p>Responsive design, Flexbox, Grid, animations, and preprocessors.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 90%"></div>
+                        </div>
+                        <small class="text-muted">4+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fab fa-bootstrap"></i>
+                        </div>
+                        <h3>Bootstrap</h3>
+                        <p>Responsive frameworks, components, and custom theme development.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 85%"></div>
+                        </div>
+                        <small class="text-muted">3+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <h3>JavaScript</h3>
+                        <p>ES6+, DOM manipulation, APIs, and modern JS frameworks.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 88%"></div>
+                        </div>
+                        <small class="text-muted">4+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <h3>jQuery</h3>
+                        <p>DOM manipulation, animations, AJAX, and plugin development.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 80%"></div>
+                        </div>
+                        <small class="text-muted">3+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fab fa-php"></i>
+                        </div>
+                        <h3>PHP</h3>
+                        <p>Backend development, MVC, Laravel, and WordPress customization.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 82%"></div>
+                        </div>
+                        <small class="text-muted">4+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>MySQL</h3>
+                        <p>Database design, optimization, queries, and administration.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                        <small class="text-muted">3+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Frontend Frameworks</h3>
+                        <p>React, Vue.js, and modern build tools like Webpack.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                        <small class="text-muted">2+ years experience</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>Backend & APIs</h3>
+                        <p>RESTful APIs, Node.js, Express, and authentication systems.</p>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" style="width: 70%"></div>
+                        </div>
+                        <small class="text-muted">2+ years experience</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Work Experience</h2>
+                <p>Professional journey and key achievements</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Senior Frontend Developer</h3>
+                        <span class="date">2021 - Present</span>
+                        <p>Leading frontend development for enterprise applications using React, TypeScript, and modern CSS frameworks. Implemented responsive design systems and improved performance by 40%.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Full Stack Developer</h3>
+                        <span class="date">2019 - 2021</span>
+                        <p>Developed and maintained web applications using PHP, MySQL, JavaScript, and Bootstrap. Collaborated with design teams to implement pixel-perfect UI/UX designs.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Web Developer</h3>
+                        <span class="date">2017 - 2019</span>
+                        <p>Built responsive websites and web applications using HTML, CSS, JavaScript, and jQuery. Integrated with REST APIs and implemented database solutions with MySQL.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Junior Developer</h3>
+                        <span class="date">2015 - 2017</span>
+                        <p>Started career developing small business websites using HTML, CSS, and basic JavaScript. Learned PHP and MySQL for dynamic content management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Projects</h2>
+                <p>Showcasing skills through real-world applications</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-img">
+                            <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="E-Commerce Platform">
+                        </div>
+                        <div class="project-content">
+                            <h3>E-Commerce Platform</h3>
+                            <p>Full-featured online store with product management, cart functionality, and secure checkout.</p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">PHP</span>
+                                <span class="tech-tag">MySQL</span>
+                                <span class="tech-tag">Bootstrap</span>
+                                <span class="tech-tag">jQuery</span>
+                            </div>
+                            <a href="./E-commerce_Platform.html" class="btn btn-outline-primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-img">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Dashboard Analytics">
+                        </div>
+                        <div class="project-content">
+                            <h3>Dashboard Analytics</h3>
+                            <p>Interactive admin dashboard with real-time data visualization and reporting features.</p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">SCSS</span>
+                                <span class="tech-tag">Chart.js</span>
+                                <span class="tech-tag">PHP</span>
+                            </div>
+                            <a href="./Dashboard.html" class="btn btn-outline-primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-img">
+                            <img src="https://plus.unsplash.com/premium_photo-1668432349915-2f7fb163f896?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bmlrb24lMjBjYW1lcmF8ZW58MHx8MHx8fDA%3D" alt="Social Media App">
+                        </div>
+                        <div class="project-content">
+                            <h3>Gallery App</h3>
+                            <p>Responsive social networking application with user profiles, posts, and real-time messaging.</p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">HTML5</span>
+                                <span class="tech-tag">CSS3</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">MySQL</span>
+                            </div>
+                            <a href="./gallery_app.html" class="btn btn-outline-primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+                <p>Interested in working together? Let's connect!</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email</h3>
+                        <p>developer@example.com</p>
+                        <a href="mailto:developer@example.com" class="btn btn-outline-primary">Send Email</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Phone</h3>
+                        <p>+1 (555) 123-4567</p>
+                        <a href="tel:+15551234567" class="btn btn-outline-primary">Call Now</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fab fa-linkedin-in"></i>
+                        </div>
+                        <h3>LinkedIn</h3>
+                        <p>Connect with me</p>
+                        <a href="#" class="btn btn-outline-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <h3>DevSkills</h3>
+                    <p>Showcasing expertise in modern web development technologies and best practices.</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <h4>Technologies</h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge">HTML5</span>
+                        <span class="badge">CSS3</span>
+                        <span class="badge">SCSS</span>
+                        <span class="badge">Bootstrap</span>
+                        <span class="badge">JavaScript</span>
+                        <span class="badge">jQuery</span>
+                        <span class="badge">PHP</span>
+                        <span class="badge">MySQL</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4>Follow Me</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-codepen"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="background-color: rgba(255,255,255,0.1);">
+            <div class="text-center">
+                <p>&copy; 2023 DevSkills Showcase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Animate progress bars when in viewport
+        function animateProgressBars() {
+            $('.progress-fill').each(function() {
+                const elementTop = $(this).offset().top;
+                const elementBottom = elementTop + $(this).outerHeight();
+                const viewportTop = $(window).scrollTop();
+                const viewportBottom = viewportTop + $(window).height();
+                
+                if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                    const width = $(this).data('width') || $(this).css('width');
+                    $(this).css('width', width);
+                }
+            });
+        }
+
+        // Initialize on load and scroll
+        $(document).ready(function() {
+            animateProgressBars();
+            
+            $(window).on('scroll', function() {
+                animateProgressBars();
+            });
+
+            // Smooth scrolling for anchor links
+            $('a[href^="#"]').on('click', function(event) {
+                var target = $($(this).attr('href'));
+                if (target.length) {
+                    event.preventDefault();
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 70
+                    }, 1000);
+                }
+            });
+
+            // Navbar scroll effect
+            $(window).on('scroll', function() {
+                if ($(window).scrollTop() > 50) {
+                    $('.navbar').addClass('shadow-sm');
+                } else {
+                    $('.navbar').removeClass('shadow-sm');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Aqsa University - Official Website</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        /* Custom CSS for Inter font and some base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-gray-50 text-gray-800;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-md py-4 px-6 md:px-8 lg:px-12 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo and University Name -->
+            <div class="flex items-center space-x-3">
+                <img src="https://placehold.co/60x60/007bff/ffffff?text=Logo" alt="University Logo" class="h-12 w-12 rounded-full shadow-sm">
+                <h1 class="text-2xl font-bold text-blue-700">Al-Aqsa University</h1>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6 lg:space-x-8">
+                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Home</a>
+                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">About Us</a>
+                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Academics</a>
+                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Admissions</a>
+                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Research</a>
+                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Campus Life</a>
+                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Contact</a>
+                <a href="https://portal.alaqsa.edu.ps/Student/bachalor_students/other/Bacholar_Default.ASPX" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">Student Portal</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-blue-700 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4">
+            <nav class="flex flex-col space-y-3">
+                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Home</a>
+                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">About Us</a>
+                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Academics</a>
+                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Admissions</a>
+                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Research</a>
+                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Campus Life</a>
+                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Contact</a>
+                <a href="https://portal.alaqsa.edu.ps/Student/bachalor_students/other/Bacholar_Default.ASPX" target="_blank" class="block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md text-center">Student Portal</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20 px-6 md:px-8 lg:px-12 overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-no-repeat bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/004080/ffffff?text=University+Campus');"></div>
+            <div class="container mx-auto relative z-10 text-center">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-up">
+                    Educating Leaders, Innovating the Future
+                </h2>
+                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto animate-fade-in-up delay-200">
+                    Discover a world of knowledge, research, and community at Al-Aqsa University. Empowering minds for a brighter tomorrow.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 animate-fade-in-up delay-400">
+                    <a href="#" class="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-gray-100 transition duration-300 transform hover:scale-105">
+                        Explore Programs
+                    </a>
+                    <a href="#" class="border border-white text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-white hover:text-blue-700 transition duration-300 transform hover:scale-105">
+                        Apply Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Announcements/News Section -->
+        <section class="py-16 px-6 md:px-8 lg:px-12 bg-white">
+            <div class="container mx-auto">
+                <h3 class="text-3xl font-bold text-center text-blue-800 mb-12">Latest News & Announcements</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- News Card 1 -->
+                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                        <img src="https://placehold.co/400x250/e0e7ff/007bff?text=Event+Image" alt="Event Image" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-blue-700 mb-2">University Hosts International Conference</h4>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Al-Aqsa University successfully hosted the 5th International Conference on Sustainable Development, bringing together scholars from around the globe.
+                            </p>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read More <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+                        </div>
+                    </div>
+                    <!-- News Card 2 -->
+                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                        <img src="https://placehold.co/400x250/e0e7ff/007bff?text=Student+Success" alt="Student Success" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-blue-700 mb-2">Students Win National Innovation Award</h4>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Our engineering students clinched the top prize at the National Innovation Challenge for their groundbreaking renewable energy project.
+                            </p>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read More <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+                        </div>
+                    </div>
+                    <!-- News Card 3 -->
+                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                        <img src="https://placehold.co/400x250/e0e7ff/007bff?text=Admission+Open" alt="Admission Open" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-semibold text-blue-700 mb-2">Admissions for Fall 2025 Now Open</h4>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Prospective students are invited to apply for various undergraduate and postgraduate programs. Early bird discounts available!
+                            </p>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Apply Now <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Links / Call to Action Section -->
+        <section class="py-16 px-6 md:px-8 lg:px-12 bg-blue-50">
+            <div class="container mx-auto text-center">
+                <h3 class="text-3xl font-bold text-blue-800 mb-8">Quick Access & Resources</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
+                        <i class="fas fa-book-open text-4xl text-blue-600"></i>
+                        <span class="text-lg font-semibold text-gray-700">Academic Programs</span>
+                    </a>
+                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
+                        <i class="fas fa-calendar-alt text-4xl text-blue-600"></i>
+                        <span class="text-lg font-semibold text-gray-700">Academic Calendar</span>
+                    </a>
+                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
+                        <i class="fas fa-graduation-cap text-4xl text-blue-600"></i>
+                        <span class="text-lg font-semibold text-gray-700">Student Services</span>
+                    </a>
+                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
+                        <i class="fas fa-map-marker-alt text-4xl text-blue-600"></i>
+                        <span class="text-lg font-semibold text-gray-700">Campus Map</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-gray-300 py-12 px-6 md:px-8 lg:px-12 mt-auto">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- About Us -->
+            <div>
+                <h4 class="text-white text-xl font-semibold mb-4">About Al-Aqsa University</h4>
+                <p class="text-sm leading-relaxed">
+                    Al-Aqsa University is a leading institution dedicated to academic excellence, innovative research, and community service. We strive to foster a vibrant learning environment.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-white text-xl font-semibold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Admissions</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Faculties</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Library</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Careers</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Events</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h4 class="text-white text-xl font-semibold mb-4">Contact Us</h4>
+                <p class="text-sm mb-2"><i class="fas fa-map-marker-alt mr-2 text-blue-400"></i> Gaza Strip, Palestine</p>
+                <p class="text-sm mb-2"><i class="fas fa-phone mr-2 text-blue-400"></i> +970 8 264 4400</p>
+                <p class="text-sm mb-2"><i class="fas fa-envelope mr-2 text-blue-400"></i> info@alaqsa.edu.ps</p>
+            </div>
+
+            <!-- Social Media -->
+            <div>
+                <h4 class="text-white text-xl font-semibold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-facebook-square"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-twitter-square"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-instagram-square"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-sm">
+            &copy; 2025 Al-Aqsa University. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- jQuery for Mobile Menu Toggle -->
+    <script>
+        $(document).ready(function() {
+            // Toggle mobile menu visibility
+            $('#mobile-menu-button').on('click', function() {
+                $('#mobile-menu').slideToggle();
+            });
+        });
+    </script>
+</body>
+</html>

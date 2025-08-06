@@ -3,227 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al-Aqsa University - Official Website</title>
+    <title>University Portal Template</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font from Google Fonts -->
+    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- jQuery CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
-        /* Custom CSS for Inter font and some base styles */
+        /* Custom styles for responsiveness and appearance */
         body {
             font-family: 'Inter', sans-serif;
-            @apply bg-gray-50 text-gray-800;
+            background-color: #f0f2f5; /* Light gray background */
         }
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
+        .container-fluid {
+            max-width: 1280px; /* Max width for content */
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        /* Custom scrollbar for sidebar */
+        .sidebar {
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #4f46e5 #e5e7eb; /* Thumb and Track color */
+        }
+        .sidebar::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .sidebar::-webkit-scrollbar-track {
+            background: #e5e7eb; /* Light gray track */
             border-radius: 10px;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #888;
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #4f46e5; /* Primary purple thumb */
             border-radius: 10px;
+            border: 2px solid #e5e7eb;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        /* Custom active state for sidebar links */
+        .sidebar-link.active {
+            background-color: #ede9fe; /* Light purple */
+            color: #4f46e5; /* Darker purple text */
+            font-weight: 600;
+            border-left: 4px solid #4f46e5;
+        }
+        /* Smooth transition for hover effects */
+        .transition-all {
+            transition-property: all;
+            transition-duration: 300ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Hide sidebar on small screens by default */
+        .sidebar-wrapper {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 40; /* Above main content */
+        }
+        .sidebar-wrapper.open {
+            transform: translateX(0%);
+        }
+        /* Overlay for mobile sidebar */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+        }
+        .overlay.active {
+            display: block;
+        }
+
+        /* Ensure images are responsive */
+        img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
-
-    <!-- Header Section -->
-    <header class="bg-white shadow-md py-4 px-6 md:px-8 lg:px-12 sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4">
+        <div class="container-fluid flex items-center justify-between">
             <!-- Logo and University Name -->
             <div class="flex items-center space-x-3">
-                <img src="https://placehold.co/60x60/007bff/ffffff?text=Logo" alt="University Logo" class="h-12 w-12 rounded-full shadow-sm">
-                <h1 class="text-2xl font-bold text-blue-700">Al-Aqsa University</h1>
+                <img src="https://placehold.co/60x60/6b46c1/ffffff?text=Logo" alt="University Logo" class="rounded-full">
+                <h1 class="text-2xl font-bold text-gray-800 hidden md:block">University Name Portal</h1>
+                <h1 class="text-xl font-bold text-gray-800 md:hidden">University Portal</h1>
             </div>
 
-            <!-- Desktop Navigation -->
-            <nav class="hidden md:flex space-x-6 lg:space-x-8">
-                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Home</a>
-                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">About Us</a>
-                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Academics</a>
-                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Admissions</a>
-                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Research</a>
-                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Campus Life</a>
-                <a href="#" class="text-gray-600 hover:text-blue-700 font-medium transition-colors duration-200">Contact</a>
-                <a href="https://portal.alaqsa.edu.ps/Student/bachalor_students/other/Bacholar_Default.ASPX" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">Student Portal</a>
-            </nav>
+            <!-- Search Bar (optional, for larger screens) -->
+            <div class="relative hidden md:block">
+                <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
 
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-blue-700 focus:outline-none">
-                <i class="fas fa-bars text-2xl"></i>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <i class="fas fa-bars text-xl"></i>
             </button>
-        </div>
-
-        <!-- Mobile Navigation (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4">
-            <nav class="flex flex-col space-y-3">
-                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Home</a>
-                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">About Us</a>
-                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Academics</a>
-                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Admissions</a>
-                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Research</a>
-                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Campus Life</a>
-                <a href="#" class="block text-gray-700 hover:text-blue-700 font-medium py-2 px-4 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">Contact</a>
-                <a href="https://portal.alaqsa.edu.ps/Student/bachalor_students/other/Bacholar_Default.ASPX" target="_blank" class="block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md text-center">Student Portal</a>
-            </nav>
         </div>
     </header>
 
+    <!-- Main Navigation (Desktop) -->
+    <nav class="bg-indigo-700 shadow-lg hidden md:block">
+        <div class="container-fluid py-3">
+            <ul class="flex justify-center space-x-8 text-white font-medium">
+                <li><a href="#" class="hover:text-indigo-200 transition-all">Home</a></li>
+                <li class="relative group">
+                    <a href="#" class="hover:text-indigo-200 transition-all flex items-center">
+                        About Us <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                    </a>
+                    <ul class="absolute hidden group-hover:block bg-white text-gray-800 shadow-lg rounded-md mt-2 w-48 z-10">
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-all">Mission & Vision</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-all">History</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-all">Leadership</a></li>
+                    </ul>
+                </li>
+                <li class="relative group">
+                    <a href="#" class="hover:text-indigo-200 transition-all flex items-center">
+                        Academics <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                    </a>
+                    <ul class="absolute hidden group-hover:block bg-white text-gray-800 shadow-lg rounded-md mt-2 w-48 z-10">
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-all">Departments</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-all">Programs</a></li>
+                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-all">Course Catalog</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="hover:text-indigo-200 transition-all">Admissions</a></li>
+                <li><a href="#" class="hover:text-indigo-200 transition-all">Student Life</a></li>
+                <li><a href="#" class="hover:text-indigo-200 transition-all">Research</a></li>
+                <li><a href="#" class="hover:text-indigo-200 transition-all">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="overlay" class="overlay"></div>
+
     <!-- Main Content Area -->
-    <main class="flex-grow">
-        <!-- Hero Section -->
-        <section class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20 px-6 md:px-8 lg:px-12 overflow-hidden">
-            <div class="absolute inset-0 opacity-20 bg-no-repeat bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080/004080/ffffff?text=University+Campus');"></div>
-            <div class="container mx-auto relative z-10 text-center">
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-up">
-                    Educating Leaders, Innovating the Future
-                </h2>
-                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto animate-fade-in-up delay-200">
-                    Discover a world of knowledge, research, and community at Al-Aqsa University. Empowering minds for a brighter tomorrow.
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 animate-fade-in-up delay-400">
-                    <a href="#" class="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-gray-100 transition duration-300 transform hover:scale-105">
-                        Explore Programs
-                    </a>
-                    <a href="#" class="border border-white text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-white hover:text-blue-700 transition duration-300 transform hover:scale-105">
-                        Apply Now
-                    </a>
+    <main class="flex-grow container-fluid flex flex-col md:flex-row py-6 space-y-6 md:space-y-0 md:space-x-6">
+        <!-- Sidebar (Mobile: hidden by default, Desktop: always visible) -->
+        <aside id="sidebar" class="sidebar-wrapper fixed inset-y-0 left-0 w-64 bg-white shadow-lg md:relative md:translate-x-0 md:flex-shrink-0 md:rounded-lg md:overflow-y-auto md:max-h-[calc(100vh-160px)]">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Student Services</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all active">
+                            <i class="fas fa-home mr-3"></i> Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-user-graduate mr-3"></i> My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-book-open mr-3"></i> Course Registration
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-clipboard-list mr-3"></i> Grades & Transcripts
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-calendar-alt mr-3"></i> Academic Calendar
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-dollar-sign mr-3"></i> Financial Aid
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-envelope mr-3"></i> University Email
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-graduation-cap mr-3"></i> Graduation Info
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link flex items-center px-4 py-2 rounded-md text-gray-600 hover:bg-gray-100 transition-all">
+                            <i class="fas fa-sign-out-alt mr-3"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Content Section -->
+        <section class="flex-grow bg-white p-6 rounded-lg shadow-lg">
+            <!-- Hero Section / Announcements -->
+            <div class="mb-8 p-6 bg-indigo-500 text-white rounded-lg shadow-md">
+                <h2 class="text-3xl font-bold mb-2">Welcome to the Student Portal!</h2>
+                <p class="text-lg">Your hub for academic resources, student services, and important announcements.</p>
+                <button class="mt-4 bg-white text-indigo-700 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all">Explore Services</button>
+            </div>
+
+            <!-- Quick Links / Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gray-50 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Academic Resources</h3>
+                    <p class="text-gray-600">Access your course materials, library resources, and academic tools.</p>
+                    <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-3 inline-block font-medium">Learn More <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Student Support</h3>
+                    <p class="text-gray-600">Find information on counseling, health services, and career guidance.</p>
+                    <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-3 inline-block font-medium">Learn More <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-lg shadow-sm hover:shadow-md transition-all">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Campus Life</h3>
+                    <p class="text-gray-600">Discover student organizations, events, and campus facilities.</p>
+                    <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-3 inline-block font-medium">Learn More <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
                 </div>
             </div>
-        </section>
 
-        <!-- Announcements/News Section -->
-        <section class="py-16 px-6 md:px-8 lg:px-12 bg-white">
-            <div class="container mx-auto">
-                <h3 class="text-3xl font-bold text-center text-blue-800 mb-12">Latest News & Announcements</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- News Card 1 -->
-                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                        <img src="https://placehold.co/400x250/e0e7ff/007bff?text=Event+Image" alt="Event Image" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h4 class="text-xl font-semibold text-blue-700 mb-2">University Hosts International Conference</h4>
-                            <p class="text-gray-600 text-sm mb-4">
-                                Al-Aqsa University successfully hosted the 5th International Conference on Sustainable Development, bringing together scholars from around the globe.
-                            </p>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read More <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
-                        </div>
+            <!-- Latest News Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Latest News & Updates</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-5 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">University Announces New Research Grant Opportunities</h3>
+                        <p class="text-gray-600 text-sm mb-3">Posted on: July 28, 2025</p>
+                        <p class="text-gray-700">The university is proud to announce new funding opportunities for student and faculty research projects...</p>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-3 inline-block font-medium">Read More</a>
                     </div>
-                    <!-- News Card 2 -->
-                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                        <img src="https://placehold.co/400x250/e0e7ff/007bff?text=Student+Success" alt="Student Success" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h4 class="text-xl font-semibold text-blue-700 mb-2">Students Win National Innovation Award</h4>
-                            <p class="text-gray-600 text-sm mb-4">
-                                Our engineering students clinched the top prize at the National Innovation Challenge for their groundbreaking renewable energy project.
-                            </p>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read More <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
-                        </div>
+                    <div class="bg-gray-50 p-5 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Fall Semester Registration Opens Next Week</h3>
+                        <p class="text-gray-600 text-sm mb-3">Posted on: July 25, 2025</p>
+                        <p class="text-gray-700">Prepare for the upcoming Fall semester! Registration will open on August 5th...</p>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-3 inline-block font-medium">Read More</a>
                     </div>
-                    <!-- News Card 3 -->
-                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                        <img src="https://placehold.co/400x250/e0e7ff/007bff?text=Admission+Open" alt="Admission Open" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h4 class="text-xl font-semibold text-blue-700 mb-2">Admissions for Fall 2025 Now Open</h4>
-                            <p class="text-gray-600 text-sm mb-4">
-                                Prospective students are invited to apply for various undergraduate and postgraduate programs. Early bird discounts available!
-                            </p>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Apply Now <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
-                        </div>
-                    </div>
+                </div>
+                <div class="text-right mt-4">
+                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">View All News <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
                 </div>
             </div>
-        </section>
 
-        <!-- Quick Links / Call to Action Section -->
-        <section class="py-16 px-6 md:px-8 lg:px-12 bg-blue-50">
-            <div class="container mx-auto text-center">
-                <h3 class="text-3xl font-bold text-blue-800 mb-8">Quick Access & Resources</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
-                        <i class="fas fa-book-open text-4xl text-blue-600"></i>
-                        <span class="text-lg font-semibold text-gray-700">Academic Programs</span>
-                    </a>
-                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
-                        <i class="fas fa-calendar-alt text-4xl text-blue-600"></i>
-                        <span class="text-lg font-semibold text-gray-700">Academic Calendar</span>
-                    </a>
-                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
-                        <i class="fas fa-graduation-cap text-4xl text-blue-600"></i>
-                        <span class="text-lg font-semibold text-gray-700">Student Services</span>
-                    </a>
-                    <a href="#" class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center space-y-3 transform transition duration-300 hover:scale-105 hover:shadow-xl border border-blue-100">
-                        <i class="fas fa-map-marker-alt text-4xl text-blue-600"></i>
-                        <span class="text-lg font-semibold text-gray-700">Campus Map</span>
-                    </a>
-                </div>
+            <!-- Important Notices/Announcements -->
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Important Notices</h2>
+                <ul class="space-y-3">
+                    <li class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md shadow-sm">
+                        <h4 class="font-semibold text-yellow-800">Scheduled Maintenance: Student Information System</h4>
+                        <p class="text-yellow-700 text-sm">The SIS will be unavailable on August 10th from 9:00 AM to 12:00 PM for scheduled maintenance.</p>
+                    </li>
+                    <li class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-md shadow-sm">
+                        <h4 class="font-semibold text-blue-800">New COVID-19 Campus Guidelines Issued</h4>
+                        <p class="text-blue-700 text-sm">Please review the updated health and safety protocols for the upcoming academic year.</p>
+                    </li>
+                </ul>
             </div>
         </section>
     </main>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-800 text-gray-300 py-12 px-6 md:px-8 lg:px-12 mt-auto">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-10">
+        <div class="container-fluid grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- About Us -->
             <div>
-                <h4 class="text-white text-xl font-semibold mb-4">About Al-Aqsa University</h4>
-                <p class="text-sm leading-relaxed">
-                    Al-Aqsa University is a leading institution dedicated to academic excellence, innovative research, and community service. We strive to foster a vibrant learning environment.
+                <h3 class="text-xl font-semibold mb-4">University Name</h3>
+                <p class="text-gray-400 text-sm">
+                    Dedicated to academic excellence, innovation, and community engagement.
+                    Empowering the next generation of leaders and thinkers.
                 </p>
             </div>
 
             <!-- Quick Links -->
             <div>
-                <h4 class="text-white text-xl font-semibold mb-4">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Admissions</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Faculties</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Library</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Careers</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">Events</a></li>
+                <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-all">Admissions</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-all">Academics</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-all">Campus Map</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-all">Careers</a></li>
                 </ul>
             </div>
 
-            <!-- Contact Info -->
+            <!-- Contact Info & Social Media -->
             <div>
-                <h4 class="text-white text-xl font-semibold mb-4">Contact Us</h4>
-                <p class="text-sm mb-2"><i class="fas fa-map-marker-alt mr-2 text-blue-400"></i> Gaza Strip, Palestine</p>
-                <p class="text-sm mb-2"><i class="fas fa-phone mr-2 text-blue-400"></i> +970 8 264 4400</p>
-                <p class="text-sm mb-2"><i class="fas fa-envelope mr-2 text-blue-400"></i> info@alaqsa.edu.ps</p>
-            </div>
-
-            <!-- Social Media -->
-            <div>
-                <h4 class="text-white text-xl font-semibold mb-4">Follow Us</h4>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-facebook-square"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-twitter-square"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-2xl"><i class="fab fa-instagram-square"></i></a>
+                <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
+                <p class="text-gray-400 text-sm">
+                    123 University Ave, City, Country<br>
+                    Email: info@university.edu<br>
+                    Phone: +1 (123) 456-7890
+                </p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-facebook-f text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-twitter text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-linkedin-in text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all"><i class="fab fa-instagram text-xl"></i></a>
                 </div>
             </div>
         </div>
-        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-sm">
-            &copy; 2025 Al-Aqsa University. All Rights Reserved.
+        <div class="container-fluid text-center text-gray-500 text-sm mt-8 border-t border-gray-700 pt-6">
+            &copy; 2025 University Name. All rights reserved.
         </div>
     </footer>
 
-    <!-- jQuery for Mobile Menu Toggle -->
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Toggle mobile menu visibility
+            // Mobile menu toggle
             $('#mobile-menu-button').on('click', function() {
-                $('#mobile-menu').slideToggle();
+                $('#sidebar').toggleClass('open');
+                $('#overlay').toggleClass('active');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            $('#overlay').on('click', function() {
+                $('#sidebar').removeClass('open');
+                $('#overlay').removeClass('active');
+            });
+
+            // Close sidebar when a sidebar link is clicked (for mobile)
+            $('.sidebar-link').on('click', function() {
+                // Remove 'active' class from all sidebar links
+                $('.sidebar-link').removeClass('active');
+                // Add 'active' class to the clicked link
+                $(this).addClass('active');
+
+                // Close the sidebar on mobile after clicking a link
+                if ($(window).width() < 768) { // Tailwind's 'md' breakpoint is 768px
+                    $('#sidebar').removeClass('open');
+                    $('#overlay').removeClass('active');
+                }
+            });
+
+            // Handle dropdown menus for desktop
+            $('.group').hover(
+                function() {
+                    $(this).children('ul').stop(true, true).slideDown(200);
+                },
+                function() {
+                    $(this).children('ul').stop(true, true).slideUp(200);
+                }
+            );
+
+            // Ensure sidebar state is correct on resize
+            $(window).resize(function() {
+                if ($(window).width() >= 768) {
+                    $('#sidebar').removeClass('open');
+                    $('#overlay').removeClass('active');
+                }
             });
         });
     </script>

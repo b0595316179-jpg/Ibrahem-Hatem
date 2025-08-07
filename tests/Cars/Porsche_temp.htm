@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porsche Showcase | Luxury Performance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary-dark: #1a1a1a;
+            --secondary-dark: #2d2d2d;
+            --accent-gold: #d4af37;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .preloader-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 0;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .cta-button:hover {
+            background: var(--white);
+            color: var(--primary-dark);
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 8rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 400px;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 5%;
+            background: var(--secondary-dark);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 5%;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-dark);
+            padding: 4rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .footer p {
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animation Classes */
+        .animate-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .animate-scale {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-logo">PORSCHE</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">PORSCHE</a>
+        <div class="nav-links">
+            <a href="#hero" class="active">Home</a>
+            <a href="#gallery">Models</a>
+            <a href="#features">Features</a>
+            <a href="#cta">Explore</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&h=900&q=80" alt="Porsche 911" class="hero-image">
+        <div class="hero-content">
+            <h1>ENGINEERED FOR PERFECTION</h1>
+            <p>Experience the pinnacle of automotive excellence with Porsche's legendary performance and design.</p>
+            <a href="#gallery" class="cta-button">DISCOVER MODELS</a>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <h2 class="section-title">ICONIC MODELS</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9yc2NoZXxlbnwwfHwwfHx8MA%3D%3D" alt="Porsche 911" class="gallery-image">
+                <div class="gallery-overlay">
+                    <h3>911 Carrera</h3>
+                    <p>The iconic sports car that defines performance</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1597858520171-563a8e8b9925?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHBvcnNjaGV8ZW58MHx8MHx8fDA%3D" alt="Porsche Taycan" class="gallery-image">
+                <div class="gallery-overlay">
+                    <h3>Taycan Turbo</h3>
+                    <p>Electric performance redefined</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1615125468484-088e3dfcabb6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHBvcnNjaGV8ZW58MHx8MHx8fDA%3D" alt="Porsche Cayenne" class="gallery-image">
+                <div class="gallery-overlay">
+                    <h3>Cayenne GTS</h3>
+                    <p>Luxury SUV with sporty DNA</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2 class="section-title">EXCEPTIONAL FEATURES</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Unmatched Performance</h3>
+                <p>Engineered for speed, precision, and ultimate driving pleasure.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>Timeless Design</h3>
+                <p>Iconic aesthetics that blend heritage with modern innovation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3>German Precision</h3>
+                <p>Handcrafted excellence with meticulous attention to detail.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section">
+        <div class="cta-content">
+            <h2>READY TO EXPERIENCE PERFECTION?</h2>
+            <p>Visit your nearest Porsche center and take the wheel of automotive excellence.</p>
+            <a href="#" class="cta-button">FIND A DEALER</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2023 PORSCHE AG. All rights reserved.</p>
+            <p>Engineered in Germany. Designed for the world.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader animation
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            const logo = document.querySelector('.preloader-logo');
+            
+            gsap.to(logo, {
+                opacity: 1,
+                duration: 1,
+                onComplete: function() {
+                    gsap.to(preloader, {
+                        opacity: 0,
+                        duration: 1,
+                        onComplete: function() {
+                            preloader.style.display = 'none';
+                            initAnimations();
+                        }
+                    });
+                }
+            });
+        });
+
+        function initAnimations() {
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Hero animations
+            gsap.to('.hero-image', {
+                opacity: 1,
+                duration: 1.5,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.hero h1', {
+                opacity: 1,
+                transform: 'translateY(0)',
+                duration: 1,
+                delay: 0.5,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.hero p', {
+                opacity: 1,
+                transform: 'translateY(0)',
+                duration: 1,
+                delay: 0.8,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.cta-button', {
+                opacity: 1,
+                transform: 'translateY(0)',
+                duration: 1,
+                delay: 1.1,
+                ease: 'power2.out'
+            });
+
+            // Gallery animations
+            gsap.utils.toArray('.gallery-item').forEach((item, i) => {
+                gsap.to(item, {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    },
+                    delay: i * 0.1
+                });
+            });
+
+            // Section title animations
+            gsap.utils.toArray('.section-title').forEach(title => {
+                gsap.to(title, {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: title,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+
+            // Feature card animations
+            gsap.utils.toArray('.feature-card').forEach((card, i) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    },
+                    delay: i * 0.2
+                });
+            });
+
+            // CTA content animation
+            gsap.to('.cta-content', {
+                opacity: 1,
+                transform: 'translateY(0)',
+                duration: 1,
+                scrollTrigger: {
+                    trigger: '.cta-content',
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // Footer animation
+            gsap.to('.footer-content', {
+                opacity: 1,
+                transform: 'translateY(0)',
+                duration: 1,
+                scrollTrigger: {
+                    trigger: '.footer-content',
+                    start: 'top 90%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // Gallery hover effects
+            gsap.utils.toArray('.gallery-item').forEach(item => {
+                const image = item.querySelector('.gallery-image');
+                
+                item.addEventListener('mouseenter', () => {
+                    gsap.to(image, {
+                        scale: 1.05,
+                        duration: 0.6,
+                        ease: 'power2.out'
+                    });
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    gsap.to(image, {
+                        scale: 1,
+                        duration: 0.6,
+                        ease: 'power2.out'
+                    });
+                });
+            });
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        gsap.to(window, {
+                            duration: 1,
+                            scrollTo: {
+                                y: target.offsetTop - 80,
+                                autoKill: false
+                            },
+                            ease: 'power2.inOut'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Initialize animations when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAnimations);
+        } else {
+            initAnimations();
+        }
+    </script>
+</body>
+</html>

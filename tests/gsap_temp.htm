@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GSAP Temp UI</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .temp-container {
+      background: #1e293b;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      width: 280px;
+    }
+
+    .temp-value {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      width: 100%;
+      background: #334155;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #38bdf8, #f87171);
+      transition: width 0.4s ease;
+    }
+
+    .label {
+      font-size: 18px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="temp-container">
+  <div class="temp-value" id="tempValue">--°C</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="tempFill"></div>
+  </div>
+  <div class="label" id="tempLabel">Temperature</div>
+</div>
+
+<script>
+  const tempValueEl = document.getElementById("tempValue");
+  const tempFill = document.getElementById("tempFill");
+
+  // Simulated temperature value (you could replace this with real data)
+  let temp = Math.floor(Math.random() * 41); // 0°C to 40°C
+
+  // Animate progress bar and number using GSAP
+  gsap.to(tempFill, {
+    width: `${(temp / 40) * 100}%`,
+    duration: 2,
+    ease: "power2.out"
+  });
+
+  gsap.to({}, {
+    duration: 2,
+    onUpdate: function () {
+      const progress = this.progress();
+      const currentTemp = Math.round(progress * temp);
+      tempValueEl.textContent = `${currentTemp}°C`;
+    }
+  });
+</script>
+
+</body>
+</html>

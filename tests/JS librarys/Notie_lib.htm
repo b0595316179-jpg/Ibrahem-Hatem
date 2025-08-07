@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pro Notie Template</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notie/dist/notie.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .success { background: #4CAF50; color: white; }
+    .error { background: #f44336; color: white; }
+    .warning { background: #ff9800; color: white; }
+    .info { background: #2196F3; color: white; }
+  </style>
+</head>
+<body>
+
+  <h1>Notie.js Pro Template</h1>
+
+  <button class="success" onclick="notie.alert({ type: 'success', text: 'Action successful!', time: 3 })">Success</button>
+  <button class="error" onclick="notie.alert({ type: 'error', text: 'Something went wrong!', time: 3 })">Error</button>
+  <button class="warning" onclick="notie.alert({ type: 'warning', text: 'This is a warning.', time: 3 })">Warning</button>
+  <button class="info" onclick="notie.alert({ type: 'info', text: 'Informational notice.', time: 3 })">Info</button>
+
+  <button onclick="showConfirm()">Show Confirm</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/notie"></script>
+  <script>
+    function showConfirm() {
+      notie.confirm({
+        text: 'Are you sure you want to proceed?',
+        submitText: 'Yes',
+        cancelText: 'Cancel',
+        submitCallback: () => {
+          notie.alert({ type: 'success', text: 'Confirmed!', time: 2 });
+        },
+        cancelCallback: () => {
+          notie.alert({ type: 'warning', text: 'Cancelled.', time: 2 });
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

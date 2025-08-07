@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mo.js Pro Template</title>
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center">
+
+    <!-- Preloader Overlay -->
+    <div id="preloader" class="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-[#0d1117] transition-opacity duration-700 ease-out">
+        <h1 id="preloader-text" class="text-4xl font-bold text-[#5eead4] mb-4">Loading</h1>
+        <div id="loading-bar" class="w-64 h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div class="h-full bg-[#5eead4]" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main id="main-content" class="w-full h-full flex flex-col items-center justify-center opacity-0 transition-opacity duration-700">
+        <div class="text-center p-8">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-[#5eead4] mb-6">
+                mo.js in Action
+            </h1>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10">
+                A simple demonstration of how to create dynamic, burst-based animations.
+            </p>
+            <button id="burst-button" class="relative px-8 py-4 bg-[#5eead4] text-[#0d1117] rounded-full font-bold text-lg hover:bg-[#43a08d] transition-colors shadow-lg overflow-hidden">
+                Click for a Burst!
+            </button>
+        </div>
+    </main>
+
+    <!-- mo.js Library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@mojs/core@1.4.0/dist/mo.min.js"></script>
+
+    <!-- Your custom animation logic -->
+    <script>
+        // The script has been re-structured to run after the DOM is fully loaded.
+        // This is a more robust way to ensure the mo.js library is available.
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Preloader Animation with mo.js Timeline ---
+            // A mo.js timeline is used to orchestrate multiple animations.
+            const preloaderText = document.getElementById('preloader-text');
+            const loadingBar = document.getElementById('loading-bar').querySelector('div');
+            
+            const preloaderTimeline = new mojs.Timeline({
+                onComplete() {
+                    // Hide the preloader and show the main content
+                    document.getElementById('preloader').style.opacity = '0';
+                    document.getElementById('main-content').style.opacity = '1';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Animate the text to scale and fade out
+            const textFade = new mojs.Html({
+                el: preloaderText,
+                scale: { 1: 1.2 },
+                opacity: { 1: 0 },
+                duration: 800,
+                easing: 'cubic.out'
+            });
+
+            // Animate the loading bar's width
+            const barFill = new mojs.Tween({
+                duration: 1200,
+                onUpdate: progress => {
+                    loadingBar.style.width = `${progress * 100}%`;
+                }
+            });
+
+            preloaderTimeline.add(textFade, barFill);
+            preloaderTimeline.play();
+
+            // --- Burst Animation on Button Click ---
+            const burstButton = document.getElementById('burst-button');
+            const burstOptions = {
+                parent: burstButton, // The burst will be centered on the button
+                radius: { 0: 100 },
+                count: 8,
+                children: {
+                    shape: 'polygon',
+                    radius: { 10: 0 },
+                    stroke: 'white',
+                    strokeWidth: { 6: 0 },
+                    fill: 'none',
+                    duration: 1000,
+                    easing: 'cubic.out',
+                    angle: { 0: 360 },
+                    delay: 'rand(0, 200)',
+                }
+            };
+            
+            const circleBurst = new mojs.Burst({
+                ...burstOptions,
+                children: {
+                    ...burstOptions.children,
+                    shape: 'circle',
+                    fill: '#5eead4',
+                    stroke: 'none'
+                }
+            });
+
+            const polygonBurst = new mojs.Burst({
+                ...burstOptions,
+                children: {
+                    ...burstOptions.children,
+                    shape: 'polygon',
+                    fill: 'none',
+                    stroke: 'white',
+                    strokeWidth: { 4: 0 },
+                    angle: { 0: 180 }
+                }
+            });
+
+            burstButton.addEventListener('click', (e) => {
+                circleBurst.replay();
+                polygonBurst.replay();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMW Showcase | Premium Driving Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bmw-dark: #0F0F0F;
+            --bmw-darker: #0A0A0A;
+            --bmw-light: #FFFFFF;
+            --bmw-blue: #0066B1;
+            --bmw-silver: #C0C0C0;
+            --bmw-black: #1A1A1A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bmw-dark);
+            color: var(--bmw-light);
+            overflow-x: hidden;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bmw-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .preloader-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--bmw-blue);
+            letter-spacing: 2px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--bmw-light);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--bmw-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--bmw-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--bmw-blue);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--bmw-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(15, 15, 15, 0.8) 0%, rgba(15, 15, 15, 0.4) 50%, rgba(15, 15, 15, 0.8) 100%);
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: var(--bmw-blue);
+            color: var(--bmw-light);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            background: #005299;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 177, 0.3);
+        }
+
+        /* Sections */
+        .section {
+            padding: 8rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .section-title span {
+            color: var(--bmw-blue);
+        }
+
+        /* Featured Models */
+        .models-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .model-card {
+            background: var(--bmw-black);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .model-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .model-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .model-info {
+            padding: 1.5rem;
+        }
+
+        .model-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .model-description {
+            color: var(--bmw-silver);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        /* Contact */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-input {
+            background: var(--bmw-black);
+            border: 1px solid #333;
+            color: var(--bmw-light);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--bmw-blue);
+        }
+
+        textarea.form-input {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bmw-darker);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo span {
+            color: var(--bmw-blue);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--bmw-silver);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--bmw-blue);
+        }
+
+        .copyright {
+            color: var(--bmw-silver);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .section {
+                padding: 4rem 5%;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                padding: 0.8rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-logo">BMW</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#home" class="logo">BMW<span>.</span></a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#models">Models</a>
+            <a href="#technology">Technology</a>
+            <a href="#performance">Performance</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button class="mobile-menu-btn">☰</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="BMW Luxury Car" class="hero-image">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">THE ULTIMATE DRIVING MACHINE</h1>
+            <p class="hero-subtitle">Experience the perfect blend of performance, luxury, and innovation with BMW's latest collection of premium vehicles.</p>
+            <button class="cta-button">Explore Models</button>
+        </div>
+    </section>
+
+    <!-- Featured Models Section -->
+    <section id="models" class="section">
+        <h2 class="section-title">Featured <span>Models</span></h2>
+        <div class="models-container">
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1549399542-7e7f8c7f6e3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW M3" class="model-image">
+                <div class="model-info">
+                    <h3 class="model-name">BMW M3</h3>
+                    <p class="model-description">The ultimate sports sedan with track-focused performance and everyday usability. Pure driving pleasure redefined.</p>
+                    <button class="cta-button">Learn More</button>
+                </div>
+            </div>
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1617814065893-00757125efab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW iX" class="model-image">
+                <div class="model-info">
+                    <h3 class="model-name">BMW iX</h3>
+                    <p class="model-description">The future of electric mobility. Innovative design meets sustainable performance in this groundbreaking SUV.</p>
+                    <button class="cta-button">Learn More</button>
+                </div>
+            </div>
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1541443131876-50075382096a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW 5 Series" class="model-image">
+                <div class="model-info">
+                    <h3 class="model-name">BMW 5 Series</h3>
+                    <p class="model-description">The epitome of executive luxury. Advanced technology and refined comfort for the discerning driver.</p>
+                    <button class="cta-button">Learn More</button>
+                </div>
+            </div>
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1593055039944-06a2b7c5f45a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW X7" class="model-image">
+                <div class="model-info">
+                    <h3 class="model-name">BMW X7</h3>
+                    <p class="model-description">The pinnacle of luxury SUVs. Spacious interior, commanding presence, and exceptional performance.</p>
+                    <button class="cta-button">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="technology" class="section" style="background: var(--bmw-black);">
+        <h2 class="section-title">Innovation <span>Technology</span></h2>
+        <div class="models-container">
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW iDrive" class="model-image">
+                <div class="model-info">
+                    <h3 class="model-name">BMW iDrive 8</h3>
+                    <p class="model-description">Next-generation infotainment system with intuitive controls and seamless connectivity.</p>
+                    <button class="cta-button">Discover</button>
+                </div>
+            </div>
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Autonomous Driving" class="model-image">
+                <div class="model-info">
+                    <h3 class="model-name">Autonomous Driving</h3>
+                    <p class="model-description">Advanced driver assistance systems for enhanced safety and comfort on every journey.</p>
+                    <button class="cta-button">Explore</button>
+                </div>
+            </div>
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1563720220291-0b32f1a3e4c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Electric Performance" class="model-image">
+                <div class="model-info">
+                    <h3 class="model-name">Electric Performance</h3>
+                    <p class="model-description">Revolutionary electric powertrains delivering instant torque and zero emissions.</p>
+                    <button class="cta-button">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Section -->
+    <section id="performance" class="section">
+        <h2 class="section-title">Peak <span>Performance</span></h2>
+        <div class="contact-container">
+            <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                BMW's commitment to performance excellence is evident in every model. From the track-focused M Series to our innovative electric vehicles, 
+                each BMW is engineered to deliver the ultimate driving experience. Our advanced engineering, precision manufacturing, and 
+                relentless pursuit of perfection ensure that every BMW performs at the highest level.
+            </p>
+            <button class="cta-button" style="margin: 0 auto;">Experience Performance</button>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section" style="background: var(--bmw-black);">
+        <h2 class="section-title">Image <span>Gallery</span></h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1550358860-25905616f65c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1593055039944-06a2b7c5f45a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1541443131876-50075382096a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1617814065893-00757125efab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1549399542-7e7f8c7f6e3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BMW Gallery" class="gallery-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2 class="section-title">Get In <span>Touch</span></h2>
+        <div class="contact-container">
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" class="form-input" required>
+                <input type="email" placeholder="Your Email" class="form-input" required>
+                <input type="tel" placeholder="Your Phone" class="form-input">
+                <textarea placeholder="Your Message" class="form-input" required></textarea>
+                <button type="submit" class="cta-button">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">BMW<span>.</span></div>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#models">Models</a>
+            <a href="#technology">Technology</a>
+            <a href="#performance">Performance</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <p class="copyright">© 2023 BMW. All rights reserved. The Ultimate Driving Machine.</p>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+
+        // Navigation scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero text animation
+        gsap.from('.hero-title', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            ease: 'power3.out'
+        });
+
+        gsap.from('.hero-subtitle', {
+            duration: 1,
+            y: 30,
+            opacity: 0,
+            ease: 'power3.out',
+            delay: 0.3
+        });
+
+        gsap.from('.cta-button', {
+            duration: 1,
+            y: 20,
+            opacity: 0,
+            ease: 'power3.out',
+            delay: 0.6
+        });
+
+        // Section animations
+        gsap.utils.toArray('.section').forEach(section => {
+            gsap.from(section.children, {
+                duration: 0.8,
+                y: 30,
+                opacity: 0,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%'
+                }
+            });
+        });
+
+        // Model card animations
+        gsap.utils.toArray('.model-card').forEach((card, i) => {
+            gsap.from(card, {
+                duration: 0.6,
+                y: 50,
+                opacity: 0,
+                delay: i * 0.1,
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 90%'
+                }
+            });
+        });
+
+        // Gallery item animations
+        gsap.utils.toArray('.gallery-item').forEach((item, i) => {
+            gsap.from(item, {
+                duration: 0.5,
+                scale: 0.8,
+                opacity: 0,
+                delay: i * 0.05,
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 95%'
+                }
+            });
+        });
+
+        // Hover effects for model cards
+        document.querySelectorAll('.model-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    duration: 0.3,
+                    y: -5,
+                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    duration: 0.3,
+                    y: 0,
+                    boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)'
+                });
+            });
+        });
+
+        // Button hover effects
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                gsap.to(button, {
+                    duration: 0.2,
+                    scale: 1.05,
+                    backgroundColor: '#005299'
+                });
+            });
+
+            button.addEventListener('mouseleave', () => {
+                gsap.to(button, {
+                    duration: 0.2,
+                    scale: 1,
+                    backgroundColor: '#0066B1'
+                });
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>

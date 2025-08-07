@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Professional Popper.js Popup</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn {
+      padding: 10px 20px;
+      background-color: #005eff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .popup {
+      display: none;
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      max-width: 250px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="popup-btn" class="btn">Show Info</button>
+
+  <div id="popup-content" class="popup">
+    <strong>Popper.js Popup</strong><br>
+    This popup is positioned smartly using Popper.js and closes on outside click.
+  </div>
+
+  <!-- Popper.js CDN -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script>
+    const btn = document.getElementById('popup-btn');
+    const popup = document.getElementById('popup-content');
+    let popperInstance = null;
+
+    function createPopper() {
+      popperInstance = Popper.createPopper(btn, popup, {
+        placement: 'bottom',
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 8],
+            },
+          },
+        ],
+      });
+    }
+
+    function show() {
+      popup.style.display = 'block';
+      createPopper();
+      document.addEventListener('click', handleOutsideClick);
+    }
+
+    function hide() {
+      popup.style.display = 'none';
+      if (popperInstance) {
+        popperInstance.destroy();
+        popperInstance = null;
+      }
+      document.removeEventListener('click', handleOutsideClick);
+    }
+
+    function handleOutsideClick(e) {
+      if (!popup.contains(e.target) && e.target !== btn) {
+        hide();
+      }
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (popup.style.display === 'block') {
+        hide();
+      } else {
+        show();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GSAP Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 40px 60px;
+      background-color: #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #cbd5e1;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    section {
+      padding: 80px 60px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      color: #f1f5f9;
+    }
+
+    .about, .projects, .contact {
+      margin-top: 40px;
+    }
+
+    .project-card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    @media(max-width: 768px) {
+      header, section {
+        padding: 30px;
+      }
+
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MyPortfolio</div>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="hero">
+  <h1 id="introText">Hello, I'm <span style="color:#38bdf8;">Your Name</span></h1>
+  <p id="tagline">A Front-End Developer crafting beautiful websites with passion and precision.</p>
+</section>
+
+<section id="about">
+  <h2>About Me</h2>
+  <div class="about">
+    <p>I’m a developer with a strong focus on clean design, smooth user experience, and cutting-edge technologies like GSAP, React, and Tailwind.</p>
+  </div>
+</section>
+
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="projects">
+    <div class="project-card">🌐 Personal Portfolio Website</div>
+    <div class="project-card">📱 React Native To-Do App</div>
+    <div class="project-card">⚙️ GSAP Animated Landing Page</div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact">
+    <p>Email: your.email@example.com</p>
+    <p>LinkedIn: linkedin.com/in/yourname</p>
+  </div>
+</section>
+
+<footer>
+  © 2025 Your Name. All rights reserved.
+</footer>
+
+<script>
+  // GSAP Animations on Load
+  gsap.from("#introText", { y: 60, opacity: 0, duration: 1.2, ease: "power4.out" });
+  gsap.from("#tagline", { y: 40, opacity: 0, delay: 0.3, duration: 1 });
+
+  gsap.from("nav a", {
+    opacity: 0,
+    y: -20,
+    stagger: 0.1,
+    delay: 0.5,
+    duration: 1
+  });
+
+  gsap.from(".about p", {
+    scrollTrigger: "#about",
+    y: 40,
+    opacity: 0,
+    duration: 1,
+    delay: 0.2
+  });
+
+  gsap.from(".project-card", {
+    scrollTrigger: "#projects",
+    y: 40,
+    opacity: 0,
+    stagger: 0.2,
+    duration: 1,
+    delay: 0.3
+  });
+
+  gsap.from(".contact p", {
+    scrollTrigger: "#contact",
+    y: 30,
+    opacity: 0,
+    stagger: 0.2,
+    duration: 1
+  });
+</script>
+
+</body>
+</html>

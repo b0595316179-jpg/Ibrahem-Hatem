@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pro Toastr Template</title>
+
+  <!-- Toastr CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button.success { background-color: #28a745; color: white; }
+    button.info    { background-color: #17a2b8; color: white; }
+    button.warning { background-color: #ffc107; color: black; }
+    button.error   { background-color: #dc3545; color: white; }
+
+    button:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+  <h1>Toastr Notifications Demo</h1>
+  <div class="btn-container">
+    <button class="success" onclick="showToastr('success')">Show Success</button>
+    <button class="info" onclick="showToastr('info')">Show Info</button>
+    <button class="warning" onclick="showToastr('warning')">Show Warning</button>
+    <button class="error" onclick="showToastr('error')">Show Error</button>
+  </div>
+
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script>
+    // Optional: Configure global toastr options
+    toastr.options = {
+      "closeButton": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "timeOut": "3000"
+    };
+
+    function showToastr(type) {
+      const messageMap = {
+        success: "Operation completed successfully!",
+        info: "Here is some information.",
+        warning: "This is a warning message.",
+        error: "An error occurred. Please try again."
+      };
+      toastr[type](messageMap[type], type.toUpperCase());
+    }
+  </script>
+</body>
+</html>

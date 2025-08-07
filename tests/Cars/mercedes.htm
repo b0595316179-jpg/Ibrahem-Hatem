@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercedes-Benz - The Best or Nothing</title>
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #fff;
+            scroll-behavior: smooth;
+        }
+        .bg-hero {
+            background-image: url('https://images.unsplash.com/photo-1616789682173-1f1700675453?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fG1lcmNlZGVzJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww');
+            background-size: cover;
+            background-position: center;
+        }
+        .nav-links a {
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #d1d5db; /* A lighter gray */
+        }
+        .car-card {
+            transform: translateY(50px);
+            opacity: 0;
+            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+        .car-card-revealed {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9I+J5d6k2x0x/k5i9L9fK7e5H9b9T8S/1r7K+w+R5q5a0q9+d1q7c02b+A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 p-6">
+        <nav id="navbar" class="flex justify-between items-center max-w-7xl mx-auto opacity-0">
+            <!-- Logo -->
+            <a href="#" class="text-white text-2xl font-bold tracking-widest">MERCEDES</a>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-8 text-lg font-medium nav-links">
+                <a href="#models" class="text-white hover:text-gray-400">Models</a>
+                <a href="#electric" class="text-white hover:text-gray-400">Electric</a>
+                <a href="#configurator" class="text-white hover:text-gray-400">Configurator</a>
+                <a href="#contact" class="text-white hover:text-gray-400">Contact</a>
+            </div>
+
+            <!-- Hamburger Menu for Mobile -->
+            <button class="md:hidden text-white text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex flex-col justify-center items-center text-center bg-hero">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="relative z-10 p-6 text-white max-w-4xl mx-auto">
+            <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight mb-4 opacity-0">
+                The Best or Nothing.
+            </h1>
+            <p id="hero-subtitle" class="text-lg md:text-2xl font-light mb-8 opacity-0">
+                Experience the pinnacle of luxury, performance, and innovation.
+            </p>
+            <a href="#models" id="hero-btn" class="inline-block bg-white text-black font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 transform scale-0 origin-center">
+                Explore Models
+            </a>
+        </div>
+    </section>
+
+    <!-- Models Section -->
+    <section id="models" class="py-20 px-6 bg-gray-950">
+        <div class="max-w-7xl mx-auto text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Our Models</h2>
+            <p class="text-lg text-gray-400">Find the perfect vehicle that fits your lifestyle.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+            <!-- Car Card 1: S-Class -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl car-card">
+                <img src="https://images.unsplash.com/photo-1608994751987-e647252b1fd9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWVyY2VkZXMlMjB3YWxscGFwZXJ8ZW58MHx8MHx8fDA%3D"
+                     alt="Mercedes-Benz S-Class"
+                     class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold mb-2">S-Class</h3>
+                    <p class="text-gray-400 mb-4">The ultimate in luxury and comfort.</p>
+                    <a href="#" class="inline-block text-white font-semibold hover:text-gray-400 transition-colors">
+                        View Details <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Car Card 2: C-Class -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl car-card">
+                <img src="https://images.unsplash.com/photo-1625690096555-a0a4d190901c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8bWVyY2VkZXMlMjB3YWxscGFwZXJ8ZW58MHx8MHx8fDA%3D"
+                     alt="Mercedes-Benz C-Class"
+                     class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold mb-2">C-Class</h3>
+                    <p class="text-gray-400 mb-4">Sporty design meets innovative technology.</p>
+                    <a href="#" class="inline-block text-white font-semibold hover:text-gray-400 transition-colors">
+                        View Details <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Car Card 3: G-Class -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl car-card">
+                <img src="https://images.unsplash.com/photo-1612368801878-ab107b75bb77?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG1lcmNlZGVzJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww"
+                     alt="Mercedes-Benz G-Class"
+                     class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold mb-2">G-Class</h3>
+                    <p class="text-gray-400 mb-4">Unmistakable design and unstoppable power.</p>
+                    <a href="#" class="inline-block text-white font-semibold hover:text-gray-400 transition-colors">
+                        View Details <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Car Card 4: EQS -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl car-card">
+                <img src="https://images.unsplash.com/photo-1616789682173-1f1700675453?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fG1lcmNlZGVzJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww"
+                     alt="Mercedes-Benz EQS"
+                     class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold mb-2">EQS</h3>
+                    <p class="text-gray-400 mb-4">The ultimate in electric luxury.</p>
+                    <a href="#" class="inline-block text-white font-semibold hover:text-gray-400 transition-colors">
+                        View Details <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Car Card 5: AMG GT -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl car-card">
+                <img src="https://images.unsplash.com/photo-1633224519888-4879a766c126?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG1lcmNlZGVzJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww"
+                     alt="Mercedes-AMG GT"
+                     class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold mb-2">AMG GT</h3>
+                    <p class="text-gray-400 mb-4">Unleash the beast within.</p>
+                    <a href="#" class="inline-block text-white font-semibold hover:text-gray-400 transition-colors">
+                        View Details <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Car Card 6: EQE -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl car-card">
+                <img src="https://images.unsplash.com/photo-1658396505539-bc790d1c7d72?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fG1lcmNlZGVzJTIwd2FsbHBhcGVyfGVufDB8fDB8fHww"
+                     alt="Mercedes-Benz EQE"
+                     class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold mb-2">EQE</h3>
+                    <p class="text-gray-400 mb-4">Electric elegance in every detail.</p>
+                    <a href="#" class="inline-block text-white font-semibold hover:text-gray-400 transition-colors">
+                        View Details <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white py-12 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h3 class="text-3xl font-bold mb-4">Connect With Us</h3>
+            <p class="text-gray-400 mb-8">Follow us on social media for the latest updates and news.</p>
+            <div class="flex justify-center space-x-6 text-2xl mb-8">
+                <a href="#" class="hover:text-gray-400 transition-colors"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-gray-400 transition-colors"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-gray-400 transition-colors"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-gray-400 transition-colors"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="text-gray-500 text-sm">&copy; 2024 Mercedes-Benz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Ensure GSAP and ScrollTrigger are loaded before running animations
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero section animations
+            gsap.to("#navbar", {
+                opacity: 1,
+                duration: 1,
+                delay: 0.5,
+                ease: "power2.out"
+            });
+            gsap.to("#hero-title", {
+                opacity: 1,
+                duration: 1.5,
+                delay: 1,
+                ease: "power3.out"
+            });
+            gsap.to("#hero-subtitle", {
+                opacity: 1,
+                duration: 1.5,
+                delay: 1.5,
+                ease: "power3.out"
+            });
+            gsap.to("#hero-btn", {
+                scale: 1,
+                duration: 1,
+                delay: 2,
+                ease: "elastic.out(1, 0.5)"
+            });
+
+            // Car card scroll animations
+            const carCards = document.querySelectorAll('.car-card');
+            carCards.forEach((card, index) => {
+                gsap.to(card, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%", // Start animation when top of card is 85% from top of viewport
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

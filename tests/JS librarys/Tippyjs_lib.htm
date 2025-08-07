@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tippy.js Pro Tooltip</title>
+
+  <!-- Tippy.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+
+  <!-- Optional Custom Theme -->
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .tooltip-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .tooltip-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Custom tooltip style */
+    .tippy-box[data-theme~='custom'] {
+      background-color: #222;
+      color: #fff;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .tippy-box[data-theme~='custom'][data-placement^='top'] > .tippy-arrow::before {
+      border-top-color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="tooltip-btn" data-tippy-content="Professional tooltip using Tippy.js">
+    Hover Me
+  </button>
+
+  <!-- Tippy.js Scripts -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
+  <!-- Tippy Initialization -->
+  <script>
+    tippy('.tooltip-btn', {
+      theme: 'custom',
+      animation: 'scale',
+      arrow: true,
+      placement: 'top',
+      delay: [100, 100],
+      duration: [300, 250],
+      interactive: true,
+    });
+  </script>
+
+</body>
+</html>

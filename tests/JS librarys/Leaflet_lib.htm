@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Map | Leaflet</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha512-sA+e6wOBmLsXzDfNUcV+5OBr2LK5FvW1LP8b5LoLdK8P1DFgIhU1sLWxjhZSHFuLX/xB0zjWRyTtv3ZEm1D4wQ=="
+    crossorigin=""
+  />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+
+    header {
+      background: #282c34;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: bold;
+      color: #61dafb;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      z-index: 999;
+      position: relative;
+    }
+
+    #map {
+      height: calc(100% - 64px); /* adjust for header */
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    🌍 Interactive Map - Leaflet Template
+  </header>
+
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha512-nMM8LLgHZnuNiUUx8+fKh1aXcFqWvUVUQt8v1WkOOpXsmlxSLq5QZzm0M4RCN6tiNGtXSGYWltg1A1Qa82b+AA=="
+    crossorigin=""
+  ></script>
+
+  <script>
+    // Init map
+    const map = L.map('map').setView([51.505, -0.09], 13);
+
+    // Dark tile layer
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> | &copy; OpenStreetMap contributors',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Custom icon
+    const customIcon = L.icon({
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -35]
+    });
+
+    // Marker with custom icon
+    L.marker([51.505, -0.09], { icon: customIcon })
+      .addTo(map)
+      .bindPopup('<b>Custom Marker</b><br>This is a modern styled Leaflet map.')
+      .openPopup();
+
+    // Add scale
+    L.control.scale().addTo(map);
+  </script>
+</body>
+</html>

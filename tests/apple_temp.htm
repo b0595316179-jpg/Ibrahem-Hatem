@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Phone Pro - Redefine Possible</title>
+    <meta name="description" content="Experience the future with Apple Phone Pro. Revolutionary design, cutting-edge technology, and unparalleled performance.">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-black: #000;
+            --primary-white: #fff;
+            --light-gray: #f5f5f7;
+            --dark-gray: #86868b;
+            --accent-blue: #0071e3;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--primary-white);
+            color: var(--primary-black);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 5%;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--primary-black);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-black);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            opacity: 0;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--dark-gray);
+            margin-bottom: 2rem;
+            opacity: 0;
+        }
+
+        .cta-button {
+            background-color: var(--accent-blue);
+            color: var(--primary-white);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .cta-button:hover {
+            background-color: #005bbd;
+            transform: scale(1.05);
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 5%;
+            background-color: var(--light-gray);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            opacity: 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--primary-white);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-white);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Models Section */
+        .models {
+            padding: 8rem 5%;
+        }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .model-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 20px;
+            background: var(--light-gray);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .model-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .model-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 1.5rem;
+        }
+
+        .model-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .model-card p {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 8rem 5%;
+            background-color: var(--light-gray);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Color Selector */
+        .color-selector {
+            padding: 5rem 5%;
+            text-align: center;
+            background-color: var(--primary-white);
+        }
+
+        .color-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .color-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .color-option.active {
+            border-color: var(--primary-black);
+            transform: scale(1.1);
+        }
+
+        .space-black { background-color: #1d1d1f; }
+        .silver { background-color: #f5f5f7; border: 1px solid #ddd; }
+        .deep-purple { background-color: #5b5c90; }
+        .gold { background-color: #fad7bd; }
+        .titanium { background-color: #a0a0a0; }
+
+        .phone-display {
+            max-width: 400px;
+            margin: 0 auto;
+            opacity: 0;
+        }
+
+        .phone-display img {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Specs Section */
+        .specs {
+            padding: 8rem 5%;
+        }
+
+        .specs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .specs-image {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .specs-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .specs-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-black);
+            color: var(--primary-white);
+            padding: 4rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .footer-links a {
+            color: var(--primary-white);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .specs-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .color-options {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: var(--primary-white);
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Apple</a>
+            <nav class="nav-links">
+                <a href="#models">Models</a>
+                <a href="#features">Features</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#specs">Specs</a>
+                <a href="#support">Support</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>iPhone 16 Pro</h1>
+            <p>Titanium. So strong. So light. So Pro.</p>
+            <button class="cta-button">Learn More</button>
+        </div>
+        <img src="https://media.istockphoto.com/id/1731402068/photo/smartphone-with-a-blank-screen-on-a-white-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=w5Z5fEQTo0sU6LH1mjXCuPtFHjsS30Qg9hxEd3dX-vw=" alt="iPhone 16 Pro" class="hero-image" loading="lazy">
+    </section>
+
+    <!-- Models Section -->
+    <section class="models" id="models">
+        <h2 class="section-title">Choose Your iPhone</h2>
+        <div class="models-grid">
+            <div class="model-card">
+                <img src="" alt="iPhone 16 Pro" class="model-image" loading="lazy">
+                <h3>iPhone 16 Pro</h3>
+                <p>The ultimate iPhone with titanium design</p>
+            </div>
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1727093493838-5a5f2da03b65?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGlwaG9uZSUyMDE2fGVufDB8fDB8fHww" alt="iPhone 16 Pro Max" class="model-image" loading="lazy">
+                <h3>iPhone 16 Pro Max</h3>
+                <p>Our biggest Pro display ever</p>
+            </div>
+            <div class="model-card">
+                <img src="" alt="iPhone 16" class="model-image" loading="lazy">
+                <h3>iPhone 16</h3>
+                <p>A total powerhouse with advanced cameras</p>
+            </div>
+            <div class="model-card">
+                <img src="https://images.unsplash.com/photo-1726839662712-83fadeddecff?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aXBob25lJTIwMTZ8ZW58MHx8MHx8fDA%3D" alt="iPhone 16 Plus" class="model-image" loading="lazy">
+                <h3>iPhone 16 Plus</h3>
+                <p>The perfect balance of size and power</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Incredible Innovation</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Titanium Design</h3>
+                <p>Stronger and lighter than ever before with aerospace-grade titanium.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3>Pro Camera System</h3>
+                <p>48MP Main camera with advanced computational photography.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <h3>A17 Pro Chip</h3>
+                <p>Game-changing performance for gaming, pro apps, and more.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-battery-full"></i>
+                </div>
+                <h3>All-Day Battery</h3>
+                <p>Industry-leading battery life for all your daily activities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h2 class="section-title">Designed to Impress</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1694043822286-6f1e204a90f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="iPhone 16 Pro Camera" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1691685361793-10f4b523b4ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="iPhone 16 Pro Front View" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1688649514244-958f4c5d4f4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="iPhone 16 Back View" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1694043822286-6f1e204a90f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="iPhone 16 Pro Max" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Selector -->
+    <section class="color-selector">
+        <h2 class="section-title">Choose Your Finish</h2>
+        <div class="color-options">
+            <div class="color-option space-black active" data-color="space-black"></div>
+            <div class="color-option silver" data-color="silver"></div>
+            <div class="color-option deep-purple" data-color="deep-purple"></div>
+            <div class="color-option gold" data-color="gold"></div>
+            <div class="color-option titanium" data-color="titanium"></div>
+        </div>
+        <div class="phone-display">
+            <img src="https://images.unsplash.com/photo-1691685361793-10f4b523b4ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="iPhone 16 Pro Space Black" id="phone-image" loading="lazy">
+        </div>
+    </section>
+
+    <!-- Specs Section -->
+    <section class="specs" id="specs">
+        <div class="specs-container">
+            <div class="specs-image">
+                <img src="https://images.unsplash.com/photo-1694043822286-6f1e204a90f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="iPhone 16 Pro Technical Specifications" loading="lazy">
+            </div>
+            <div class="specs-list">
+                <div class="spec-item">
+                    <span>Display</span>
+                    <span>6.3" or 6.9" Super Retina XDR</span>
+                </div>
+                <div class="spec-item">
+                    <span>Chip</span>
+                    <span>A17 Pro chip with 6-core CPU</span>
+                </div>
+                <div class="spec-item">
+                    <span>Camera</span>
+                    <span>48MP Main | 12MP Ultra Wide | 12MP Telephoto</span>
+                </div>
+                <div class="spec-item">
+                    <span>Battery</span>
+                    <span>Up to 33 hours video playback</span>
+                </div>
+                <div class="spec-item">
+                    <span>Storage</span>
+                    <span>128GB | 256GB | 512GB | 1TB</span>
+                </div>
+                <div class="spec-item">
+                    <span>Connectivity</span>
+                    <span>5G | Wi-Fi 6E | Bluetooth 5.3</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="support">
+        <div class="footer-content">
+            <a href="#" class="logo">Apple</a>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                <a href="#"><i class="fas fa-headset"></i> Support</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+            </div>
+            <p class="copyright">Copyright © 2023 Apple Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="close-lightbox">&times;</button>
+        <div class="lightbox-content">
+            <img src="" alt="Enlarged view" id="lightbox-img">
+        </div>
+    </div>
+
+    <script>
+        // Initialize GSAP and ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero animations
+        gsap.to('.hero h1', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out"
+        });
+
+        gsap.to('.hero p', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.3,
+            ease: "power2.out"
+        });
+
+        gsap.to('.cta-button', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.6,
+            ease: "power2.out"
+        });
+
+        gsap.to('.hero-image', {
+            opacity: 1,
+            duration: 1,
+            delay: 0.9,
+            ease: "power2.out"
+        });
+
+        // Models animations
+        gsap.to('.model-card', {
+            scrollTrigger: {
+                trigger: '.models-grid',
+                start: 'top 80%'
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1
+        });
+
+        // Features animations
+        gsap.to('.section-title', {
+            scrollTrigger: {
+                trigger: '.section-title',
+                start: 'top 80%'
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.8
+        });
+
+        gsap.to('.feature-card', {
+            scrollTrigger: {
+                trigger: '.features-grid',
+                start: 'top 80%'
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.2
+        });
+
+        // Gallery animations
+        gsap.to('.gallery-item', {
+            scrollTrigger: {
+                trigger: '.gallery-grid',
+                start: 'top 80%'
+            },
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.1
+        });
+
+        // Color selector animation
+        gsap.to('.phone-display', {
+            opacity: 1,
+            duration: 1,
+            scrollTrigger: {
+                trigger: '.color-selector',
+                start: 'top 80%'
+            }
+        });
+
+        // Specs animation
+        gsap.to('.specs-container', {
+            scrollTrigger: {
+                trigger: '.specs',
+                start: 'top 80%'
+            },
+            opacity: 1,
+            y: 0,
+            duration: 1
+        });
+
+        // Color selector functionality
+        const colorOptions = document.querySelectorAll('.color-option');
+        const phoneImage = document.getElementById('phone-image');
+
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all options
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                // Add active class to clicked option
+                option.classList.add('active');
+                
+                // In a real implementation, you would change the image source here
+                // For demo purposes, we'll just keep the same image
+                phoneImage.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    phoneImage.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+
+        // Lightbox functionality
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeLightbox = document.querySelector('.close-lightbox');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.querySelector('img').src;
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeLightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // CTA button functionality
+        const ctaButton = document.querySelector('.cta-button');
+        ctaButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: document.querySelector('#models').offsetTop - 80,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

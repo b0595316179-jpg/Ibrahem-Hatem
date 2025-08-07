@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SweetAlert2 Professional Template</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<button onclick="showProSwal()">Show Professional Alert</button>
+
+<script>
+  function showProSwal() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action cannot be undone.',
+      icon: 'warning',
+      iconColor: '#e74c3c',
+      background: '#f9f9f9',
+      color: '#2c3e50',
+      confirmButtonText: 'Yes, proceed',
+      cancelButtonText: 'Cancel',
+      showCancelButton: true,
+      reverseButtons: true,
+      customClass: {
+        popup: 'swal2-custom-popup',
+        confirmButton: 'swal2-confirm-btn',
+        cancelButton: 'swal2-cancel-btn'
+      },
+      buttonsStyling: false
+    });
+  }
+</script>
+
+<style>
+  .swal2-custom-popup {
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .swal2-confirm-btn {
+    background-color: #2ecc71;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    margin: 0 0.5rem;
+  }
+
+  .swal2-cancel-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    margin: 0 0.5rem;
+  }
+
+  .swal2-confirm-btn:hover,
+  .swal2-cancel-btn:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+</style>
+
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSAP Portfolio Popup</title>
+    <!-- GSAP CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+        /* General Styles & Dark Mode Setup */
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --primary-color: #bb86fc;
+            --secondary-color: #03dac6;
+            --accent-color: #f67280;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+
+        body.light-mode {
+            --bg-color: #f5f5f5;
+            --surface-color: #ffffff;
+            --text-color: #121212;
+            --primary-color: #6200ee;
+            --secondary-color: #018786;
+            --accent-color: #d84315;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Utility classes */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Dark/Light Mode Toggle Button */
+        .mode-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--surface-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .mode-toggle:hover {
+            background: var(--primary-color);
+            color: var(--surface-color);
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--surface-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px var(--shadow-color);
+        }
+
+        .project-thumbnail img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-info h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .project-info p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Popup/Lightbox Styles */
+        .popup-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .popup-backdrop.visible {
+            visibility: visible;
+        }
+
+        /* Parallax effect for the backdrop background */
+        .popup-backdrop::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
+        }
+
+        .popup-content {
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            border-radius: 16px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 50px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.8);
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .popup-content.visible {
+            visibility: visible;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 10;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .close-button:hover {
+            transform: rotate(90deg) scale(1.1);
+            color: var(--accent-color);
+        }
+
+        .popup-media img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .popup-details {
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .popup-details h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .popup-details p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .tech-stack span {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--surface-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin: 0 0.5rem 0.5rem 0;
+        }
+
+        .popup-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            transition: color 0.2s ease;
+        }
+        .popup-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive design */
+        @media (min-width: 768px) {
+            .popup-content {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+            .popup-media img {
+                border-radius: 16px 0 0 16px;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dark/Light Mode Toggle -->
+    <button class="mode-toggle" aria-label="Toggle dark and light mode">🌙</button>
+
+    <main class="portfolio-grid">
+        <!-- Sample Project Thumbnails -->
+        <div class="project-card" data-project-id="1">
+            <div class="project-thumbnail">
+                <img src="https://placehold.co/400x200/5c6bc0/ffffff?text=Project+One" alt="Thumbnail for Project One">
+            </div>
+            <div class="project-info">
+                <h3>Project One</h3>
+                <p>A description of the first project.</p>
+            </div>
+        </div>
+        <div class="project-card" data-project-id="2">
+            <div class="project-thumbnail">
+                <img src="https://placehold.co/400x200/8d6e63/ffffff?text=Project+Two" alt="Thumbnail for Project Two">
+            </div>
+            <div class="project-info">
+                <h3>Project Two</h3>
+                <p>A description of the second project.</p>
+            </div>
+        </div>
+        <div class="project-card" data-project-id="3">
+            <div class="project-thumbnail">
+                <img src="https://placehold.co/400x200/4db6ac/ffffff?text=Project+Three" alt="Thumbnail for Project Three">
+            </div>
+            <div class="project-info">
+                <h3>Project Three</h3>
+                <p>A description of the third project.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Portfolio Popup (Initially hidden) -->
+    <div id="popupBackdrop" class="popup-backdrop" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+        <div id="popupContent" class="popup-content">
+            <button class="close-button" aria-label="Close popup">×</button>
+            
+            <div class="popup-media">
+                <img id="popupImage" src="" alt="Project image">
+            </div>
+            
+            <div class="popup-details">
+                <h2 id="popupTitle">Project Title</h2>
+                <p id="popupDescription"></p>
+                <div class="tech-stack" id="popupTechStack"></div>
+                <div class="popup-links" id="popupLinks"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        // Store project data to populate the popup
+        const projects = [
+            {
+                id: "1",
+                title: "Project One",
+                description: "This is a detailed description for Project One. It showcases my skills in front-end development, including responsive design and interactive user interfaces.",
+                image: "https://placehold.co/600x400/5c6bc0/ffffff?text=Project+One+Details",
+                tech: ["HTML", "CSS", "JavaScript", "GSAP"],
+                liveUrl: "#",
+                githubUrl: "#"
+            },
+            {
+                id: "2",
+                title: "Project Two",
+                description: "Project Two is a full-stack application built to demonstrate back-end capabilities. It features user authentication and a RESTful API.",
+                image: "https://placehold.co/600x400/8d6e63/ffffff?text=Project+Two+Details",
+                tech: ["React", "Node.js", "Express", "MongoDB"],
+                liveUrl: "#",
+                githubUrl: "#"
+            },
+            {
+                id: "3",
+                title: "Project Three",
+                description: "An interactive data visualization dashboard. This project uses d3.js to render complex datasets into beautiful and easy-to-understand charts.",
+                image: "https://placehold.co/600x400/4db6ac/ffffff?text=Project+Three+Details",
+                tech: ["D3.js", "SVG", "JavaScript", "Webpack"],
+                liveUrl: "#",
+                githubUrl: "#"
+            }
+        ];
+
+        // --- ELEMENTS ---
+        const backdrop = document.getElementById('popupBackdrop');
+        const content = document.getElementById('popupContent');
+        const closeBtn = content.querySelector('.close-button');
+        const toggleBtn = document.querySelector('.mode-toggle');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        // --- STATE & UTILITY ---
+        let activeProjectCard = null;
+        let isDarkMode = true;
+        let originalFocusElement = null; // Store the element that opened the popup for focus return
+        const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+        // --- ANIMATIONS (GSAP Timelines) ---
+        // Main entrance timeline for the popup
+        const popupEnterTimeline = gsap.timeline({ paused: true, defaults: { duration: 0.5, ease: "power3.out" } })
+            .to(backdrop, { opacity: 1, visibility: 'visible', duration: 0.3 })
+            .fromTo(content, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, visibility: 'visible', duration: 0.5, ease: 'back.out(1.2)' })
+            .fromTo(content.querySelector('.close-button'), { opacity: 0, x: 20 }, { opacity: 1, x: 0 }, "<0.2")
+            .fromTo(content.querySelector('.popup-media'), { opacity: 0, xPercent: -100 }, { opacity: 1, xPercent: 0 }, "<0.1")
+            .fromTo(content.querySelector('.popup-details'), { opacity: 0, xPercent: 100 }, { opacity: 1, xPercent: 0 }, "<")
+            .from(content.querySelectorAll('.popup-details > *'), { opacity: 0, y: 20, stagger: 0.1, duration: 0.4 }, "<0.2");
+
+        // Main exit timeline for the popup
+        const popupExitTimeline = gsap.timeline({ paused: true, defaults: { duration: 0.4, ease: "power3.in" } })
+            .to(content.querySelectorAll('.popup-details > *'), { opacity: 0, y: -20, stagger: 0.05, duration: 0.2 }, 0)
+            .to(content, { opacity: 0, scale: 0.8, duration: 0.4, ease: 'power3.in' }, "<0.1")
+            .to(backdrop, { opacity: 0, visibility: 'hidden', duration: 0.3 }, "<0.2");
+
+        // --- FUNCTIONS ---
+        /**
+         * Populates the popup with project data.
+         * @param {object} projectData - The project object.
+         */
+        function populatePopup(projectData) {
+            document.getElementById('popupTitle').textContent = projectData.title;
+            document.getElementById('popupDescription').textContent = projectData.description;
+            document.getElementById('popupImage').src = projectData.image;
+            document.getElementById('popupImage').alt = `Image for ${projectData.title}`;
+
+            // Populate tech stack
+            const techStackEl = document.getElementById('popupTechStack');
+            techStackEl.innerHTML = '';
+            projectData.tech.forEach(tech => {
+                const span = document.createElement('span');
+                span.textContent = tech;
+                techStackEl.appendChild(span);
+            });
+
+            // Populate links
+            const linksEl = document.getElementById('popupLinks');
+            linksEl.innerHTML = '';
+            if (projectData.liveUrl) {
+                const liveLink = document.createElement('a');
+                liveLink.href = projectData.liveUrl;
+                liveLink.textContent = "Live Demo";
+                liveLink.target = "_blank";
+                linksEl.appendChild(liveLink);
+            }
+            if (projectData.githubUrl) {
+                const githubLink = document.createElement('a');
+                githubLink.href = projectData.githubUrl;
+                githubLink.textContent = "GitHub Repo";
+                githubLink.target = "_blank";
+                linksEl.appendChild(githubLink);
+            }
+        }
+
+        /**
+         * Opens the portfolio popup.
+         * @param {object} projectData - The project data to display.
+         * @param {HTMLElement} triggerElement - The element that triggered the open.
+         */
+        function openPopup(projectData, triggerElement) {
+            // Populate content before animating
+            populatePopup(projectData);
+            
+            // Store the currently focused element
+            originalFocusElement = triggerElement;
+
+            // Start the entrance animation
+            popupEnterTimeline.play();
+
+            // Handle accessibility: set focus to the close button
+            content.querySelector('.close-button').focus();
+
+            // Block body scrolling
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Closes the portfolio popup.
+         */
+        function closePopup() {
+            // Play the exit timeline and then reset
+            popupExitTimeline.restart(true).then(() => {
+                // Reset timeline for next use
+                popupEnterTimeline.seek(0).pause();
+                // Restore focus to the element that opened the popup
+                if (originalFocusElement) {
+                    originalFocusElement.focus();
+                    originalFocusElement = null;
+                }
+                // Restore body scrolling
+                document.body.style.overflow = '';
+            });
+        }
+
+        /**
+         * Handles focus trapping within the popup.
+         * @param {Event} e - The keyboard event.
+         */
+        function handleFocusTrap(e) {
+            if (e.key === 'Tab') {
+                const focusable = content.querySelectorAll(focusableElements);
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (document.activeElement === last && !e.shiftKey) {
+                    e.preventDefault();
+                    first.focus();
+                } else if (document.activeElement === first && e.shiftKey) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        // Listen for clicks on project thumbnails
+        projectCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                const projectId = card.dataset.projectId;
+                const project = projects.find(p => p.id === projectId);
+                if (project) {
+                    openPopup(project, card);
+                }
+            });
+        });
+
+        // Close button click handler
+        closeBtn.addEventListener('click', closePopup);
+
+        // Escape key handler for closing the popup
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && backdrop.classList.contains('visible')) {
+                closePopup();
+            }
+            if (backdrop.classList.contains('visible')) {
+                handleFocusTrap(e);
+            }
+        });
+
+        // Close when clicking on the backdrop
+        backdrop.addEventListener('click', (e) => {
+            if (e.target === backdrop) {
+                closePopup();
+            }
+        });
+
+        // Parallax effect on the backdrop
+        document.addEventListener('mousemove', (e) => {
+            if (backdrop.classList.contains('visible')) {
+                const x = (window.innerWidth / 2 - e.clientX) / 50;
+                const y = (window.innerHeight / 2 - e.clientY) / 50;
+                gsap.to('.popup-backdrop::before', { x: x, y: y, duration: 1, ease: "power1.out" });
+            }
+        });
+        
+        // Dark/Light mode toggle handler
+        toggleBtn.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('light-mode', !isDarkMode);
+            toggleBtn.textContent = isDarkMode ? '🌙' : '☀️';
+            toggleBtn.setAttribute('aria-label', `Toggle ${isDarkMode ? 'dark' : 'light'} mode`);
+        });
+
+        // --- MOBILE TOUCH/SWIPE SUPPORT ---
+        let startY;
+        backdrop.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+
+        backdrop.addEventListener('touchend', (e) => {
+            const endY = e.changedTouches[0].clientY;
+            // Detect a swipe down of at least 50 pixels
+            if (backdrop.classList.contains('visible') && endY - startY > 50) {
+                closePopup();
+            }
+        }, { passive: true });
+        
+        // Initial setup for the timelines
+        // We set the initial state so GSAP knows where to start from
+        gsap.set(backdrop, { opacity: 0, visibility: 'hidden' });
+        gsap.set(content, { opacity: 0, scale: 0.8, visibility: 'hidden' });
+    </script>
+</body>
+</html>
